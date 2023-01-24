@@ -49,7 +49,7 @@ signInBtn.addEventListener("click",function(e){
 
     }
 
-    let idb=indexedDB.open("carRentDatabase",3);
+    let idb=indexedDB.open("carRentDatabase",7);
 
     idb.onsuccess=function(){
         let db=idb.result;

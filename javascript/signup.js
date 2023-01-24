@@ -102,7 +102,7 @@ function checkUserExist(store,user,cb){
 }
 
 function saveUserData(user){
-    let idb=indexedDB.open("carRentDatabase",3);
+    let idb=indexedDB.open("carRentDatabase",7);
     idb.onsuccess=function (){
         db=idb.result;
         let tx=db.transaction("users","readwrite");
