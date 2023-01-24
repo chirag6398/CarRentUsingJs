@@ -119,7 +119,7 @@ function saveUserData(user){
             if(!exist){
                 store.add(user);
                 console.log("new user")
-                // window.location.href="./login.html";
+                window.location.href="./login.html";
             }
             else{
                 // alert("user exist already");

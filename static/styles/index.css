@@ -6,4 +6,66 @@
 	margin: 0;
 	padding: 0;	
 	font-family:  sans-serif;
+	
+}
+
+#container{
+	display: flex;
+    align-items: center;
+	flex-direction: column;
+    justify-content: center;
+    /* height: 100vh; */
+}
+.center{
+	padding: 20px;
+	display: flex;
+	background-image: url("https://cdn2.rcstatic.com/com.rentalcars.185492029745.eu-west-1.web.prod.static-live/images/landing-pages/home/background-large.jpg");
+    flex-wrap: wrap;
+	background-size: cover;
+	flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+	min-height: 400px;
+    width: 100%;
+}
+h2{
+	font-weight: 900;
+    color: white;
+}
+.row1,.row2,.row3{
+	width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    justify-content: flex-start;
+}
+button{
+	margin: 10px;
+	background: darkseagreen;
+}
+input{
+	cursor: pointer;
+	outline: none;
+	border: 0px;
+	margin-left: 3px;
+	padding: 2px;
+	background: #b2c2b2;
+}
+#search{
+	background-color: #b2c2b2;
+	transition: 1s;
+}
+#search:hover{
+background-color: darkseagreen;
+font-weight: bolder;
+}
+#cars__container{
+	display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+.card{
+	margin: 10px;
 }
