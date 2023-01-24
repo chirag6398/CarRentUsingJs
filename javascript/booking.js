@@ -46,6 +46,7 @@ function findData(carData,car,cb){
     };
 }
 
+// var carData={};
     
 let idb=indexedDB.open("carRentDatabase",7);
 
@@ -54,6 +55,7 @@ let idb=indexedDB.open("carRentDatabase",7);
         let tx=db.transaction("carData","readwrite");
         let carData=tx.objectStore("carData");
         findData(carData,{id},function(data){
+           
             if(data){
                 let mainDiv=document.getElementById("cars__container");
         
@@ -103,6 +105,44 @@ let idb=indexedDB.open("carRentDatabase",7);
                 div2.appendChild(p5)
                 rentBtn.className+="btn btn-warning"
                 rentBtn.innerText="Book Now";
+
+                document.getElementById("search").addEventListener("click",function(){
+                    let pdate=document.getElementById("pdate").value;
+                    let ddate=document.getElementById("ddate").value;
+                    if(!pdate || !ddate ){
+                        alert("please select date and time from both fields");
+                        return ;
+                    }
+                    var d1=new Date(pdate);
+                    var d2=new Date(ddate);
+                    var d0=new Date();
+                    var check=diff_hours(d1,d0);
+                    var check1=diff_hours(d2,d0);
+                    var hrs=diff_hours(d2,d1);
+
+                    if(check<0){
+                        alert("please pick correct date and time");
+                        return;
+                    }
+                    if(check1<0){
+                        alert("please pick correct date and time");
+                        return;
+                    }
+                    if(hrs<0){
+                        alert("enter valid dates");
+                        return;
+                        
+                    }
+                    
+                     
+                    var totalPrice=(+data.price)*(+hrs);
+                    document.getElementById("buyBox").style.display="flex";
+                    document.getElementById("buyBox").style.width="100%";
+                    document.getElementById("pricing").innerText="Rs. "+ totalPrice;
+
+
+
+                })
                 
             }else{
                 alert("something went wrong plz try later");
@@ -112,15 +152,23 @@ let idb=indexedDB.open("carRentDatabase",7);
 
 
 
+function diff_hours(dt2, dt1) 
+{
 
-function calculateAmount(){
-
-    let pdate=document.getElementById("pdate").value;
-    let ddate=document.getElementById("ddate").value;
-    if(!pdate || !ddate ){
-        alert("please select date and time from both fields");
-        return ;
+    var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= (60 * 60);
+    console.log(diff)
+    if(diff<0){
+        return -100;
     }
-
-
+    return  (Math.round(diff));
+    
 }
+
+// function calculateAmount(){
+
+    
+
+
+
+// }
