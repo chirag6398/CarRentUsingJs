@@ -13,14 +13,14 @@ function checkUserExist(users,user,cb){
             console.log(cursor.value)
 
             if((cursor.value.name===user.userName || cursor.value.email===user.userName)&& cursor.value.password===user.password){
-                cb(true,cursor.value);
+                cb(true,cursor.value,cursor.key);
             }else{
                 cursor.continue();
             }
             
         } else {
             cb(false,{message:"user not found"});
-            // console.log("No more cursor");
+            
         }
     };
 }
@@ -55,10 +55,15 @@ signInBtn.addEventListener("click",function(e){
         let db=idb.result;
         let tx=db.transaction("users","readwrite");
         let users=tx.objectStore("users");
-        checkUserExist(users,{userName,password},function(check,obj){
+        checkUserExist(users,{userName,password},function(check,obj,key=-1){
             if(check){
 
-                window.sessionStorage.setItem("currentUser",JSON.stringify(obj));
+                obj={
+                    ...obj,
+                    key
+                }
+
+                window.localStorage.setItem("currentUser",JSON.stringify(obj));
                 window.location.href="./index.html";
             }else{
                 alert(obj.message);

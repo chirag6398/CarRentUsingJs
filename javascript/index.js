@@ -6,20 +6,20 @@ let db=null;
 
 var carNames=[];
 var quantityData=[];
-// function updateDataBaseUsers(user){
-//     key=user.key;
-//     console.log(user,key);
-    // var idb=indexedDB.open("carRentalDataBase");
+function updateDataBaseUsers(user){
+    key=user.key;
+    console.log(user,key);
+    var idb=indexedDB.open("carRentDatabase");
 
-    // idb.onsuccess=function(){
-    //     var db=idb.result;
-    //     var tx=db.transaction("users","readwrite");
-    //     var store=tx.objectStore("users");
+    idb.onsuccess=function(){
+        var db=idb.result;
+        var tx=db.transaction("users","readwrite");
+        var store=tx.objectStore("users");
 
-    //     store.put(user,key);
-    // }
+        store.put(user,key);
+    }
 
-// }
+}
 function createDataBase(){
 
     let idb=indexedDB.open("carRentDatabase",7);
@@ -45,14 +45,18 @@ function createDataBase(){
         var store=tx.objectStore("carData");
 
         var request=store.openCursor();
+        carNames=[];
+        quantityData=[];
         request.onsuccess=function(){
             let cursor=request.result;
+            
             if(cursor){
                 console.log(cursor.value);
                 carNames.push(cursor.value.name);
                 quantityData.push(10-cursor.value.quantity);
                 var data={
                     key:cursor.key,
+                    booked:false,
                     ...cursor.value
                 }
                 let mainDiv=document.getElementById("cars__container");
@@ -107,21 +111,31 @@ function createDataBase(){
 
                 rentBtn.addEventListener("click",function(){
                     
-                    user=JSON.parse(window.sessionStorage.getItem("currentUser"));
+                    user=JSON.parse(window.localStorage.getItem("currentUser"));
+
+
+                   if(user.bookingData){
+                        var ndata=user.bookingData;
+                        ndata.push(data);
+                        user={
+                            ...user,
+                            bookingData:ndata
+                        }
+                   }else{
+                        user={
+                            ...user,
+                            bookingData:[data],
+                            
+                        }
+
+                   }
+                    
+                    updateDataBaseUsers(user);
+                    
                    
-                    user={
-                        ...user,
-                        bookingData:data,
-                        booked:false,
-                        key:data.key,
-                        
-                    }
-                    // updateDataBaseUsers(user);
                     
-                    console.log(user,data.key);
-                    
-                    window.sessionStorage.setItem("currentUser",JSON.stringify(user));
-                    window.location.href="./booking.html"
+                    window.localStorage.setItem("currentUser",JSON.stringify(user));
+                    window.location.href="./booking.html";
                 })
                 cursor.continue();
 
@@ -158,7 +172,7 @@ createDataBase();
 
 
 
-if((JSON.parse(window.sessionStorage.getItem("currentUser")))){
+if((JSON.parse(window.localStorage.getItem("currentUser")))){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
 
@@ -171,6 +185,6 @@ if((JSON.parse(window.sessionStorage.getItem("currentUser")))){
 
 function logOutHandler(){
     console.log("hi")
-    window.sessionStorage.removeItem("currentUser");
+    window.localStorage.removeItem("currentUser");
     window.location.href="./login.html";
 }
