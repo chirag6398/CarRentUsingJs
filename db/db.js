@@ -58,10 +58,7 @@
 //     header:"MidSize",
 //     quantity:10
 
-// }
-// ]
-
-// let carData=[{
+// },{
 
 //     id:6,
 //     img:"https://imgd-ct.aeplcdn.com/320x200/n/cw/ec/131179/bolero-exterior-right-front-three-quarter.jpeg?isig=0&q=75",
@@ -122,4 +119,7 @@
 //     quantity:10
 
 // }
+// ]
+
+// let carData=[
 // ]

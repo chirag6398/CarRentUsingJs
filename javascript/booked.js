@@ -3,11 +3,15 @@ var user=(JSON.parse(window.localStorage.getItem("currentUser")));
 if(user){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
-
+    if(user.email==="admin1@gmail.com"){
+        document.getElementById("admin").style.display="block";
+    }else{
+        document.getElementById("admin").style.display="none";
+    }
     var bookedCar=user.carData;
     bookedCar.forEach(data => {
-        var  mainDiv=document.getElementById("cars__container");
         
+        var  mainDiv=document.getElementById("cars__container");
         var  div1=document.createElement("div");
         var  img=document.createElement("img");
         var  div2=document.createElement("div");
@@ -17,9 +21,11 @@ if(user){
         var  p3=document.createElement("p");
         var  p4=document.createElement("p");
         var  p5=document.createElement("p");
+        var  p6=document.createElement("p");
+
         var  rentBtn=document.createElement("button");
         div1.classList.add("card");
-        div1.style.minWidth="274px"
+        div1.style.width="274px"
 
         h5.className+="card-header"
         img.className+="card-img-top";
@@ -55,6 +61,19 @@ if(user){
         div2.appendChild(p5)
         rentBtn.className+="btn btn-warning"
         rentBtn.innerText="Book Now";
+
+        var d1=new Date(data.pickupTime);
+        var d2=new Date();
+        var d3=new Date(data.dropOffTime);
+        p6.className+="card-text"
+        p6.innerText="pickUp: "+d1.toLocaleString("en-GB") + " & " + "drop-Off: "+d3.toLocaleString("en-GB");
+        div2.appendChild(p6)
+        if(d1>d2){
+            div1.style.border="1px solid rgb(167, 235, 167)";
+            
+        }else{
+            div1.style.border="1px solid orange";
+        }
         
     });
     
@@ -62,3 +81,9 @@ if(user){
 }else{
     window.location.href="./login.html";
 }
+function logOutHandler(){
+    console.log("hi")
+    window.localStorage.removeItem("currentUser");
+    window.location.href="./login.html";
+}
+

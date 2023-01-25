@@ -7,8 +7,10 @@
 }
 .card{
     margin: 10px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    min-height: 425px;
-    padding: 10px;
+    border: 1px solid rgb(167, 235, 167);
     border-radius: 2px;
+    min-height: 425px;
+    box-shadow: rgba(167, 235, 167,0.2) 0px 2px 8px 0px;
+    padding: 10px;
+    
 }

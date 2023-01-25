@@ -17,7 +17,12 @@ function diff_hours(dt2, dt1)
 if(user){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
-
+    if(user.email==="admin1@gmail.com"){
+        document.getElementById("admin").style.display="block";
+    }else{
+        document.getElementById("admin").style.display="none";
+    }
+    
     var bookingCar=user.bookingData;
    
     if(!bookingCar || bookingCar.length===0){
@@ -86,6 +91,9 @@ if(user){
                 var d1=new Date(pdate);
                 var d2=new Date(ddate);
                 var d0=new Date();
+                // console.log(d1,"       ",d2);
+                
+                
                 var check=diff_hours(d1,d0);
                 var check1=diff_hours(d2,d0);
                 var hrs=diff_hours(d2,d1);
@@ -103,7 +111,10 @@ if(user){
                     return;
                     
                 }
+                data.pickupTime=d1;
+                data.dropOffTime=d2;
                 
+                // console.log(typeof(data.pickupTime));
                 totalPrice+=(+data.price)*(+hrs);
                 document.getElementById("buyBox").style.display="flex";
                 document.getElementById("buyBox").style.width="100%";
@@ -129,19 +140,13 @@ function logOutHandler(){
 
 
 
-
-    
-
-
-
-
-
-
 function payHandler(){
+
+    var nCarData=user.bookingData.concat(user.carData);
     
     user={
         ...user,
-        carData:user.bookingData,
+        carData:nCarData,
         
        
         totalPrice,
