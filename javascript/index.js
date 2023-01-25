@@ -1,8 +1,25 @@
 ///<reference path="../db/db.js"/>
 
+// import { Chart } from "./chart";
+
 let db=null;
 
+var carNames=[];
+var quantityData=[];
+// function updateDataBaseUsers(user){
+//     key=user.key;
+//     console.log(user,key);
+    // var idb=indexedDB.open("carRentalDataBase");
 
+    // idb.onsuccess=function(){
+    //     var db=idb.result;
+    //     var tx=db.transaction("users","readwrite");
+    //     var store=tx.objectStore("users");
+
+    //     store.put(user,key);
+    // }
+
+// }
 function createDataBase(){
 
     let idb=indexedDB.open("carRentDatabase",7);
@@ -32,7 +49,12 @@ function createDataBase(){
             let cursor=request.result;
             if(cursor){
                 console.log(cursor.value);
-                var data=cursor.value;
+                carNames.push(cursor.value.name);
+                quantityData.push(10-cursor.value.quantity);
+                var data={
+                    key:cursor.key,
+                    ...cursor.value
+                }
                 let mainDiv=document.getElementById("cars__container");
         
                 let div1=document.createElement("div");
@@ -84,21 +106,46 @@ function createDataBase(){
                 div2.appendChild(rentBtn);
 
                 rentBtn.addEventListener("click",function(){
-                    // let pdate=document.getElementById("pdate").value;
-                    // let ddate=document.getElementById("ddate").value;
-                    // if(!pdate || !ddate ){
-                    //     alert("please select date and time above");
-                    //     return ;
-                    // }
-
-                    window.location.href="./booking.html?id="+data.id;
+                    
+                    user=JSON.parse(window.sessionStorage.getItem("currentUser"));
+                   
+                    user={
+                        ...user,
+                        bookingData:data,
+                        booked:false,
+                        key:data.key,
+                        
+                    }
+                    // updateDataBaseUsers(user);
+                    
+                    console.log(user,data.key);
+                    
+                    window.sessionStorage.setItem("currentUser",JSON.stringify(user));
+                    window.location.href="./booking.html"
                 })
                 cursor.continue();
+
+            }else{
+                var ctx=document.getElementById("myChart").getContext("2d");
+                var myChart=new Chart(ctx,{
+                    type:"bar",
+                    data:{
+                        labels:carNames,
+                        datasets:[
+                            {
+                                data:quantityData,
+                                label:"Car Rent",
+                                backgroundColor:["red","yellow","blue","grey","brown","violet"]
+            
+                            },
+                        ],
+                    },
+                });
 
             }
         }
 
-        console.log("success")
+        
        
     }
     
@@ -109,74 +156,18 @@ function createDataBase(){
 
 createDataBase();
 
-function diff_hours(dt2, dt1) 
- {
-
-  var diff =(dt2.getTime() - dt1.getTime()) / 1000;
-  diff /= (60 * 60);
-  return Math.abs(Math.round(diff));
-  
-
- }
-
 
 
 if((JSON.parse(window.sessionStorage.getItem("currentUser")))){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
 
-    
-
-    
-
-
+   
 
 }else{
     window.location.href="./login.html";
 }
 
-
-function searchHandler(){
-    
-    let pdate=document.getElementById("pdate").value;
-    
-    let ddate=document.getElementById("ddate").value;
-  
-       
-  
-    
-    if(!pdate || !ddate ){
-        alert("please select all date and time ");
-        return ;
-    }
-    let d1=new Date();
-    let d2=new Date(pdate);
-    let d3=new Date(ddate);
-    if(d2.getFullYear()<d1.getFullYear() || d2.getMonth()<d1.getMonth() || d2.getDate()<d1.getDate() || d2.getTime()<d1.getTime()){
-
-        alert("plz choose valid pickup date and time");
-        return;
-
-    }
-    if(d2.getFullYear()>d3.getFullYear() || d2.getMonth()>d3.getMonth() || d2.getDate()>=d3.getDate() || d2.getTime()>=d3.getTime()){
-
-        alert("plz choose valid drop date and time");
-        return;
-
-    }
-
-    console.log(diff_hours(d3,d2)," ",d2.getFullYear());
-
-
-    
-
-
-
-
-
-
-
-}
 
 function logOutHandler(){
     console.log("hi")
