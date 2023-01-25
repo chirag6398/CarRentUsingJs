@@ -1,6 +1,6 @@
 ///<reference path="../db/db.js"/>
 
-// import { Chart } from "./chart";
+
 
 let db=null;
 
@@ -50,8 +50,8 @@ function createDataBase(){
         request.onsuccess=function(){
             let cursor=request.result;
             
-            if(cursor){
-                console.log(cursor.value);
+            if(cursor && cursor.value.quantity!=0){
+                console.log(cursor.value.quantity);
                 carNames.push(cursor.value.name);
                 quantityData.push(10-cursor.value.quantity);
                 var data={

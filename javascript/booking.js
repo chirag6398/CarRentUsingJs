@@ -1,14 +1,26 @@
 var user=(JSON.parse(window.localStorage.getItem("currentUser")));
 
-var dataCurrentCar={};
 var totalPrice=0;
+function diff_hours(dt2, dt1) 
+{
+
+    var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= (60 * 60);
+    console.log(diff)
+    if(diff<0){
+        return -100;
+    }
+    return  (Math.round(diff));
+    
+}
 
 if(user){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
 
     var bookingCar=user.bookingData;
-    if(!bookingCar || !bookingCar.length==0){
+   
+    if(!bookingCar || bookingCar.length===0){
         document.getElementById("cars__container").innerText="Please select car for booking";
     }
     bookingCar.forEach(function(data){
@@ -91,7 +103,6 @@ if(user){
                     
                 }
                 
-                // bookingCar    
                 totalPrice+=(+data.price)*(+hrs);
                 document.getElementById("buyBox").style.display="flex";
                 document.getElementById("buyBox").style.width="100%";
@@ -123,18 +134,7 @@ function logOutHandler(){
 
 
 
-function diff_hours(dt2, dt1) 
-{
 
-    var diff =(dt2.getTime() - dt1.getTime()) / 1000;
-    diff /= (60 * 60);
-    console.log(diff)
-    if(diff<0){
-        return -100;
-    }
-    return  (Math.round(diff));
-    
-}
 
 function payHandler(){
     
