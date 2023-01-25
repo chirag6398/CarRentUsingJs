@@ -1,13 +1,13 @@
 ///<reference path="../db/db.js"/>
 
-let signUpBtn=document.getElementById("signUp");
-let Name=document.getElementById("name");
-let Email=document.getElementById("email");
-let Password=document.getElementById("password");
-let passwordValidateBox=document.getElementById("passwordValidateBox");
-let PhnNumber=document.getElementById("number");
-let Cpassword=document.getElementById("cpassword");
-let checkIcon=document.getElementsByClassName("checkIcon");
+var  signUpBtn=document.getElementById("signUp");
+var  Name=document.getElementById("name");
+var  Email=document.getElementById("email");
+var  Password=document.getElementById("password");
+var  passwordValidateBox=document.getElementById("passwordValidateBox");
+var  PhnNumber=document.getElementById("number");
+var  Cpassword=document.getElementById("cpassword");
+var  checkIcon=document.getElementsByClassName("checkIcon");
 
 
 function HideBox(){
@@ -20,7 +20,7 @@ Password.onfocus=()=>{
 }
 
 Password.onkeyup=()=>{
-    let regExLowerCase=/[a-z]/g;
+    var  regExLowerCase=/[a-z]/g;
 
     if(Password.value.match(regExLowerCase)){
         checkIcon[0].classList.remove("invalid")
@@ -30,7 +30,7 @@ Password.onkeyup=()=>{
         checkIcon[0].classList.add("invalid");
     }
 
-    let regExUpperCase=/[A-Z]/g;
+    var  regExUpperCase=/[A-Z]/g;
 
     if(Password.value.match(regExUpperCase)){
         checkIcon[1].classList.remove("invalid")
@@ -40,7 +40,7 @@ Password.onkeyup=()=>{
         checkIcon[1].classList.add("invalid");
     }
 
-    let regExNumber=/[0-9]/g;
+    var  regExNumber=/[0-9]/g;
 
     if(Password.value.match(regExNumber)){
         checkIcon[2].classList.remove("invalid")
@@ -63,9 +63,9 @@ Password.onkeyup=()=>{
 }
 
 function passwordValidate(){
-    let check=true;
+    var  check=true;
     
-    for(let i=0;i<checkIcon.length;i++){
+    for(var  i=0;i<checkIcon.length;i++){
         if(checkIcon[i].classList.contains("invalid")==true){
             check=false;
             break;
@@ -74,15 +74,15 @@ function passwordValidate(){
     return check;
 }
 
-let db=null;
+var  db=null;
 
 
 function checkUserExist(store,user,cb){
    
-    let requests = store.openCursor();
+    var  requests = store.openCursor();
     
     requests.onsuccess = function () {
-        let cursor = requests.result;
+        var  cursor = requests.result;
 
         if (cursor) {
             console.log(cursor.value)
@@ -102,17 +102,17 @@ function checkUserExist(store,user,cb){
 }
 
 function saveUserData(user){
-    let idb=indexedDB.open("carRentDatabase",7);
+    var  idb=indexedDB.open("carRentDatabase",7);
     idb.onsuccess=function (){
         db=idb.result;
-        let tx=db.transaction("users","readwrite");
+        var  tx=db.transaction("users","readwrite");
 
         tx.onerror=function(e){
            
             console.log(e.target.error);
         }
 
-        let store=tx.objectStore("users");
+        var  store=tx.objectStore("users");
 
         checkUserExist(store,user,function(exist){
 
@@ -139,13 +139,13 @@ function saveUserData(user){
 
 signUpBtn.addEventListener("click",function(e){
     e.preventDefault();
-    let name=Name.value.trim();
-    let email=Email.value.trim();
-    let password=Password.value.trim();
-    let number=PhnNumber.value.trim();
-    let cpassword=Cpassword.value.trim();
-    let regEx=/^([a-z0-9\.-]+)@([a-z0-9]+).([a-z]{2,8})?$/;
-    let regExNumer=/^\d{10}$/;
+    var  name=Name.value.trim();
+    var  email=Email.value.trim();
+    var  password=Password.value.trim();
+    var  number=PhnNumber.value.trim();
+    var  cpassword=Cpassword.value.trim();
+    var  regEx=/^([a-z0-9\.-]+)@([a-z0-9]+).([a-z]{2,8})?$/;
+    var  regExNumer=/^\d{10}$/;
     if(name.length===0){ 
         document.getElementById("1").style.visibility="visible";  
         return;

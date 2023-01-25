@@ -1,13 +1,13 @@
-let signInBtn=document.getElementById("signIn");
-let UserName=document.getElementById("username");
-let Password=document.getElementById("password");
+var  signInBtn=document.getElementById("signIn");
+var  UserName=document.getElementById("username");
+var  Password=document.getElementById("password");
 
 function checkUserExist(users,user,cb){
    
-    let requests = users.openCursor();
+    var  requests = users.openCursor();
     
     requests.onsuccess = function () {
-        let cursor = requests.result;
+        var  cursor = requests.result;
 
         if (cursor) {
             console.log(cursor.value)
@@ -29,8 +29,8 @@ function checkUserExist(users,user,cb){
 
 signInBtn.addEventListener("click",function(e){
     e.preventDefault();
-    let userName=UserName.value.trim();
-    let password=Password.value.trim();
+    var  userName=UserName.value.trim();
+    var  password=Password.value.trim();
     
 
     if(userName.length===0){
@@ -49,12 +49,12 @@ signInBtn.addEventListener("click",function(e){
 
     }
 
-    let idb=indexedDB.open("carRentDatabase",7);
+    var  idb=indexedDB.open("carRentDatabase",7);
 
     idb.onsuccess=function(){
-        let db=idb.result;
-        let tx=db.transaction("users","readwrite");
-        let users=tx.objectStore("users");
+        var  db=idb.result;
+        var  tx=db.transaction("users","readwrite");
+        var  users=tx.objectStore("users");
         checkUserExist(users,{userName,password},function(check,obj,key=-1){
             if(check){
 

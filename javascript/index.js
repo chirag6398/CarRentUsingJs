@@ -2,7 +2,7 @@
 
 
 
-let db=null;
+var  db=null;
 
 var carNames=[];
 var quantityData=[];
@@ -22,8 +22,8 @@ function updateDataBaseUsers(user){
 }
 function createDataBase(){
 
-    let idb=indexedDB.open("carRentDatabase",7);
-    let db=null;
+    var  idb=indexedDB.open("carRentDatabase",7);
+    var  db=null;
     idb.onupgradeneeded=function (e){
         
         db=idb.result;
@@ -48,9 +48,11 @@ function createDataBase(){
         carNames=[];
         quantityData=[];
         request.onsuccess=function(){
-            let cursor=request.result;
+            var  cursor=request.result;
             
             if(cursor && cursor.value.quantity!=0){
+                // cursor.value.booked=false;
+                // store.put(cursor.value,cursor.key);
                 console.log(cursor.value.quantity);
                 carNames.push(cursor.value.name);
                 quantityData.push(10-cursor.value.quantity);
@@ -59,18 +61,18 @@ function createDataBase(){
                     booked:false,
                     ...cursor.value
                 }
-                let mainDiv=document.getElementById("cars__container");
+                var  mainDiv=document.getElementById("cars__container");
         
-                let div1=document.createElement("div");
-                let img=document.createElement("img");
-                let div2=document.createElement("div");
-                let p1=document.createElement("p");
-                let p2=document.createElement("p");
-                let h5=document.createElement("h5");
-                let p3=document.createElement("p");
-                let p4=document.createElement("p");
-                let p5=document.createElement("p");
-                let rentBtn=document.createElement("button");
+                var  div1=document.createElement("div");
+                var  img=document.createElement("img");
+                var  div2=document.createElement("div");
+                var  p1=document.createElement("p");
+                var  p2=document.createElement("p");
+                var  h5=document.createElement("h5");
+                var  p3=document.createElement("p");
+                var  p4=document.createElement("p");
+                var  p5=document.createElement("p");
+                var  rentBtn=document.createElement("button");
                 div1.classList.add("card");
                 div1.style.minWidth="274px"
 
@@ -79,6 +81,7 @@ function createDataBase(){
                 img.style.objectFit="contain";
                 img.style.maxWidth="200px";
                 img.style.maxHeight="200px";
+                img.style.alignSelf="center"
                 img.alt="loading..."
                 img.src=`${data.img}`;
                 mainDiv.appendChild(div1);
@@ -106,6 +109,7 @@ function createDataBase(){
                 p5.innerText="Type: "+data.type;
                 div2.appendChild(p5)
                 rentBtn.className+="btn btn-warning"
+                rentBtn.type="button";
                 rentBtn.innerText="Book Now";
                 div2.appendChild(rentBtn);
 
@@ -113,7 +117,7 @@ function createDataBase(){
                     
                     user=JSON.parse(window.localStorage.getItem("currentUser"));
 
-
+                    
                    if(user.bookingData){
                         var ndata=user.bookingData;
                         ndata.push(data);
@@ -129,7 +133,7 @@ function createDataBase(){
                         }
 
                    }
-                    
+                    console.log(user);
                     updateDataBaseUsers(user);
                     
                    

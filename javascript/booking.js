@@ -26,18 +26,18 @@ if(user){
     bookingCar.forEach(function(data){
         if(data.booked==false){
 
-            let mainDiv=document.getElementById("cars__container");
+            var mainDiv=document.getElementById("cars__container");
             
-            let div1=document.createElement("div");
-            let img=document.createElement("img");
-            let div2=document.createElement("div");
-            let p1=document.createElement("p");
-            let p2=document.createElement("p");
-            let h5=document.createElement("h5");
-            let p3=document.createElement("p");
-            let p4=document.createElement("p");
-            let p5=document.createElement("p");
-            let rentBtn=document.createElement("button");
+            var div1=document.createElement("div");
+            var img=document.createElement("img");
+            var div2=document.createElement("div");
+            var p1=document.createElement("p");
+            var p2=document.createElement("p");
+            var h5=document.createElement("h5");
+            var p3=document.createElement("p");
+            var p4=document.createElement("p");
+            var p5=document.createElement("p");
+            var rentBtn=document.createElement("button");
             div1.classList.add("card");
             div1.style.minWidth="274px"
 
@@ -55,6 +55,7 @@ if(user){
             img.insertAdjacentElement("afterend",h5);
             h5.insertAdjacentElement("afterend",div2);
             img.style.objectFit="contain";
+            img.style.alignSelf="center"
             p1.className+="card-text";
             p1.innerText=(data.name);
             p2.className+="card-text";
@@ -76,8 +77,8 @@ if(user){
             rentBtn.innerText="Book Now";
 
             document.getElementById("search").addEventListener("click",function(){
-                let pdate=document.getElementById("pdate").value;
-                let ddate=document.getElementById("ddate").value;
+                var pdate=document.getElementById("pdate").value;
+                var ddate=document.getElementById("ddate").value;
                 if(!pdate || !ddate ){
                     alert("please select date and time from both fields");
                     return ;
@@ -158,14 +159,14 @@ function payHandler(){
 
         user.carData.forEach(function(data){
            
-            if(data.booked===false){
+            
                 data.quantity-=1;
-                data.booked=true;
+                
                 var key=data.key;
                 
                 store.put(data,key);
 
-            }
+               
             
             
     
