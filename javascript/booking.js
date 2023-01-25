@@ -46,7 +46,8 @@ function findData(carData,car,cb){
     };
 }
 
-// var carData={};
+var dataCurrentCar={};
+var totalPrice=0;
     
 let idb=indexedDB.open("carRentDatabase",7);
 
@@ -55,7 +56,7 @@ let idb=indexedDB.open("carRentDatabase",7);
         let tx=db.transaction("carData","readwrite");
         let carData=tx.objectStore("carData");
         findData(carData,{id},function(data){
-           
+            dataCurrentCar=data;
             if(data){
                 let mainDiv=document.getElementById("cars__container");
         
@@ -135,7 +136,7 @@ let idb=indexedDB.open("carRentDatabase",7);
                     }
                     
                      
-                    var totalPrice=(+data.price)*(+hrs);
+                    totalPrice=(+data.price)*(+hrs);
                     document.getElementById("buyBox").style.display="flex";
                     document.getElementById("buyBox").style.width="100%";
                     document.getElementById("pricing").innerText="Rs. "+ totalPrice;
@@ -165,10 +166,17 @@ function diff_hours(dt2, dt1)
     
 }
 
-// function calculateAmount(){
-
+function payHandler(){
+    var user=JSON.parse(window.sessionStorage.getItem("currentUser"));
     
-
-
-
-// }
+    dataCurrentCar={
+        totalPrice,
+        ...dataCurrentCar
+    }
+    user={
+        carData:dataCurrentCar,
+        ...user
+    }
+    
+    window.sessionStorage.setItem("currentUser",JSON.stringify(user));
+}
