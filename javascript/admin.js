@@ -51,7 +51,7 @@ function getUpComingBookingDetails(){
 getUpComingBookingDetails();
 
 
-
+var carNames=[];
 function graphData(){
     var  idb=indexedDB.open("carRentDatabase");
     var  db=null;
@@ -72,7 +72,7 @@ function graphData(){
         var request=store.openCursor();
         var request2=store2.openCursor();
     
-        var carNames=[];
+        
         var quantityData=[];
         var userEmails=[];
         var userNoOfBookings=[];
@@ -139,3 +139,70 @@ function graphData(){
 
 }
 graphData();
+var myChart=null;
+function showHandler(){
+   
+    if(myChart!=null){
+        myChart.destroy();
+        document.getElementById("carBookGraph").style.display="none";
+
+    }
+    var sdate=document.getElementById("sdate").value;
+    var edate=document.getElementById("edate").value;
+    if(!sdate || !edate ){
+        alert("please select date and time from both fields");
+        return ;
+    }
+    var d1=new Date(sdate).toDateString();
+    var d2=new Date(edate).toDateString();
+    // var d0=new Date().toDateString();
+    // console.log((new Date(d1)<new Date(d2)),"---",d1,d2,d0);
+    var idb=indexedDB.open("carRentDatabase");
+    idb.onsuccess=function(){
+
+        var db=idb.result;
+        var tx=db.transaction("bookingDate","readonly");
+        var store=tx.objectStore("bookingDate");
+        var req=store.openCursor();
+        var carBooked=new Array(carNames.length).fill(0);
+        req.onsuccess=function(){
+            var cursor=req.result;
+            if(cursor){
+                console.log("all",cursor.value);
+                if((new Date(cursor.key))>=(new Date(d1)) &&(new Date(cursor.key))<=(new Date(d2))){
+                    console.log("valid",cursor.value);
+                    cursor.value.car.forEach(function(car){
+                        carBooked[car.key-1]+=1;
+                        console.log(typeof(car.key),carBooked[car.key-1],carBooked.length);
+                    })
+
+
+                }
+                cursor.continue();
+            }else{
+                console.log(carNames,carBooked);
+                
+                document.getElementById("carBookGraph").style.display="flex";
+                var ctx=document.getElementById("myChart2").getContext("2d");
+
+                myChart=new Chart(ctx,{
+                    type:"bar",
+                    data:{
+                        labels:carNames,
+                        datasets:[
+                            {
+                                data:carBooked,
+                                label:"Car Booked",
+                                backgroundColor:["red","yellow","blue","grey","brown","violet"]
+            
+                            },
+                        ],
+                    },
+                });
+
+                // myChart.destroy();
+            }
+        }
+    }
+
+}

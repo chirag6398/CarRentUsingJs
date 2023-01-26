@@ -46,7 +46,7 @@
             </div>
       </nav>
       
-    <div id="container">
+    <div id="container1">
         <div class="box">
             <div class="subBox">
                 <p><i class="fa fa-book" aria-hidden="true"></i>
@@ -86,6 +86,36 @@
         </div>
 
     </div>
+
+    <div id="container">
+        <div class="center">
+          <h2>Select Duration for analizing car bookings</h2>
+          <div class="row1">
+            <button class="btn" type="button">
+              <div style="display: flex;
+              align-items: center;min-width: 305px;
+              justify-content: space-between;">
+                <span>Starting Date:</span><input id="sdate" type="date">
+              </div>
+            </button>
+          </div>
+          <div class="row2">
+            <button class="btn" type="button">
+              <div style="display: flex;
+              align-items: center;
+              justify-content: space-between; min-width: 305px;">
+                <span>Ending Date:</span><input id="edate" type="date">
+              </div>
+            </button>
+          </div>
+          <div class="row3">
+           <button class="btn" id="search" onclick="showHandler()" style="background-color: gray;"  type="button">Show</button>
+          </div>
+          <div id="carBookGraph" style="display: none;" class="graph">
+            <canvas id="myChart2" area-label="chart" ></canvas>
+            <h4>Booked Statistics</h4>
+        </div>
+        </div>
     
 
          

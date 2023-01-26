@@ -91,7 +91,7 @@ if(user){
                 var d1=new Date(pdate);
                 var d2=new Date(ddate);
                 var d0=new Date();
-                // console.log(d1,"       ",d2);
+                
                 
                 
                 var check=diff_hours(d1,d0);
@@ -169,7 +169,7 @@ function bookingDate(car){
                     cursor.continue();
                 }
             }else{
-                // console.log(nuser)
+               
                 var ncar={
                     car:[car],
                     date:key
