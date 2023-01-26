@@ -1,4 +1,5 @@
 var user=(JSON.parse(window.localStorage.getItem("currentUser")));
+
 if((user)){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
@@ -49,7 +50,6 @@ function getUpComingBookingDetails(){
 }
 
 getUpComingBookingDetails();
-
 
 var carNames=[];
 function graphData(){
@@ -112,10 +112,10 @@ function graphData(){
             var  cursor=request.result;
             if(cursor){
                 carNames.push(cursor.value.name);
-                quantityData.push(10-cursor.value.quantity);
+                quantityData.push(cursor.value.BookedSlot.length);
                 cursor.continue();
             }else{
-                // console.log(carNames,"  ",quantityData)
+                console.log(carNames,"  ",quantityData)
                 var ctx=document.getElementById("myChart").getContext("2d");
                 var myChart=new Chart(ctx,{
                     type:"bar",
@@ -138,7 +138,9 @@ function graphData(){
     }
 
 }
+
 graphData();
+
 var myChart=null;
 function showHandler(){
    

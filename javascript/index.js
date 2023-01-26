@@ -31,7 +31,8 @@ let carData=[{
     type:"Manual",
     price:85,
     header:"Economic",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -43,7 +44,8 @@ let carData=[{
     type:"Manual",
     price:71,
     header:"Economic",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -55,7 +57,8 @@ let carData=[{
     type:"Manual",
     price:74,
     header:"Compact Monospace",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -67,7 +70,8 @@ let carData=[{
     type:"Manual",
     price:89,
     header:"Economic",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -79,7 +83,8 @@ let carData=[{
     type:"Manual",
     price:102,
     header:"MidSize",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },{
 
@@ -91,7 +96,8 @@ let carData=[{
     type:"Manual",
     price:85,
     header:"Economic",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -103,7 +109,8 @@ let carData=[{
     type:"Automatic",
     price:71,
     header:"Luxury",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -115,7 +122,8 @@ let carData=[{
     type:"Automatic",
     price:74,
     header:"Compact Monospace",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -127,7 +135,8 @@ let carData=[{
     type:"Manual",
     price:89,
     header:"Economic",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
 
 },
 {
@@ -139,7 +148,87 @@ let carData=[{
     type:"Manual",
     price:102,
     header:"Economic",
-    quantity:10
+    quantity:10,
+    BookedSlot:[]
+
+},
+{
+    id:11,
+    img:"https://media.istockphoto.com/id/167496358/photo/white-sedan-from-passenger-side-view.jpg?b=1&s=170667a&w=0&k=20&c=nE0Dw2m0GI_ZAFypy0rWKm3Jzr8fb3FVqlcTly9mQoc=",
+    name:"White Honda",
+    totalPerson:4,
+    pickupLocation:"Ghaziabad, Uttar Pradesh, IND",
+    type:"Automatic",
+    price:102,
+    header:"MidSize",
+    quantity:10,
+    BookedSlot:[]
+
+},
+{
+
+    id:12,
+    img:"https://media.istockphoto.com/id/495605964/photo/generic-compact-red-car.jpg?b=1&s=170667a&w=0&k=20&c=y6Kqs4qONkv_IRfcXtvWnMkfHS3smruldUCLSIJmv7o=",
+    name:"Maruti",
+    totalPerson:5,
+    pickupLocation:"Ghaziabad, Uttar Pradesh, IND",
+    type:"Manual",
+    price:85,
+    header:"Economic",
+    quantity:10,
+    BookedSlot:[]
+
+},
+{
+    id:13,
+    img:"https://media.istockphoto.com/id/949409516/photo/3d-illustration-of-generic-suv-car-on-white.jpg?s=612x612&w=0&k=20&c=HDZCkGDi4wM8UI-hFwoHoHGQun75lx9OuYf0-4t-OI8=",
+    name:"Suv",
+    totalPerson:6,
+    pickupLocation:"New Delhi-kirti Nagar",
+    type:"Automatic",
+    price:71,
+    header:"Luxury",
+    quantity:10,
+    BookedSlot:[]
+
+},
+{
+    id:14,
+    img:"https://media.istockphoto.com/id/949409516/photo/3d-illustration-of-generic-suv-car-on-white.jpg?s=612x612&w=0&k=20&c=HDZCkGDi4wM8UI-hFwoHoHGQun75lx9OuYf0-4t-OI8=",
+    name:"BMW",
+    totalPerson:5,
+    pickupLocation:"Ghaziabad, Uttar Pradesh, IND",
+    type:"Automatic",
+    price:150,
+    header:"Compact Monospace",
+    quantity:10,
+    BookedSlot:[]
+
+},
+{
+    id:15,
+    img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3a09vRuKT58AlKKWolNSTv9n9XwTgr27OQ&usqp=CAU",
+    name:"Honda CR-V",
+    totalPerson:5,
+    pickupLocation:"Greet - Igi Terminal 1, New Delhi",
+    type:"Manual",
+    price:99,
+    header:"Economic",
+    quantity:10,
+    BookedSlot:[]
+
+},
+{
+    id:16,
+    img:"https://di-uploads-pod6.dealerinspire.com/mariettatoyota/uploads/2018/05/2018-Toyota-RAV4.png",
+    name:"Toyota Crossover",
+    totalPerson:5,
+    pickupLocation:"Ghaziabad, Uttar Pradesh, IND",
+    type:"Manual",
+    price:102,
+    header:"Economic",
+    quantity:10,
+    BookedSlot:[]
 
 }
 ]
@@ -199,8 +288,8 @@ function createDataBase(){
         addJsonData(store);
 
         var request=store.openCursor();
-        carNames=[];
-        quantityData=[];
+        // carNames=[];
+        // quantityData=[];
         request.onsuccess=function(){
             var  cursor=request.result;
             
@@ -208,8 +297,8 @@ function createDataBase(){
                 // cursor.value.booked=false;
                 // store.put(cursor.value,cursor.key);
                 // console.log(cursor.value.quantity);
-                carNames.push(cursor.value.name);
-                quantityData.push(10-cursor.value.quantity);
+                // carNames.push(cursor.value.name);
+                // quantityData.push(10-cursor.value.quantity);
                 var data={
                     key:cursor.key,
                     booked:false,
@@ -287,7 +376,7 @@ function createDataBase(){
                         }
 
                    }
-                    console.log(user);
+                    // console.log(user);
                     updateDataBaseUsers(user);
                     
                    
@@ -298,21 +387,21 @@ function createDataBase(){
                 cursor.continue();
 
             }else{
-                var ctx=document.getElementById("myChart").getContext("2d");
-                var myChart=new Chart(ctx,{
-                    type:"bar",
-                    data:{
-                        labels:carNames,
-                        datasets:[
-                            {
-                                data:quantityData,
-                                label:"Car Rent",
-                                backgroundColor:["red","yellow","blue","grey","brown","violet"]
+                // var ctx=document.getElementById("myChart").getContext("2d");
+                // var myChart=new Chart(ctx,{
+                //     type:"bar",
+                //     data:{
+                //         labels:carNames,
+                //         datasets:[
+                //             {
+                //                 data:quantityData,
+                //                 label:"Car Rent",
+                //                 backgroundColor:["red","yellow","blue","grey","brown","violet"]
             
-                            },
-                        ],
-                    },
-                });
+                //             },
+                //         ],
+                //     },
+                // });
 
             }
         }

@@ -6,12 +6,31 @@ function diff_hours(dt2, dt1)
 
     var diff =(dt2.getTime() - dt1.getTime()) / 1000;
     diff /= (60 * 60);
-    console.log(diff)
+    // console.log(diff)
     if(diff<0){
         return -100;
     }
     return  (Math.round(diff));
     
+}
+function checkCarAvailability(data,d1,d2){
+    var available=true;
+    if(data.BookedSlot.length!=0){
+        
+        data.BookedSlot.forEach(function(slot){
+            if(((new Date(d1))>=(new Date(slot.pdate)) && (new Date(slot.ddate))>=(new Date(d1))) || (new Date(d2))>=(new Date(slot.pdate)) && (new Date(slot.ddate))>=new Date(d2) ){
+                console.log("first",d1.toDateString()>=(new Date(slot.pdate).toDateString()) && (new Date(slot.ddate).toDateString())>=d1.toDateString());
+                console.log("second",d2.toDateString()>=(new Date(slot.pdate).toDateString()),(new Date(slot.ddate))>=new Date(d2),d2.toDateString(),(new Date(slot.ddate).toDateString()))
+                available=false;
+                return false;
+            }
+        })
+    }else{
+        return true;
+    }
+
+    return available;
+
 }
 
 if(user){
@@ -111,16 +130,23 @@ if(user){
                     return;
                     
                 }
-                data.pickupTime=d1;
-                data.dropOffTime=d2;
                 
-                // console.log(typeof(data.pickupTime));
-                data.charge=(+data.price)*(+hrs);
-                totalPrice+=data.charge;
+
+                if(checkCarAvailability(data,d1,d2)){
+                    data.pickupTime=d1;
+                    data.dropOffTime=d2;
+                    data.charge=(+data.price)*(+hrs);
+                    totalPrice+=data.charge;
+                    
+                    document.getElementById("buyBox").style.display="flex";
+                    document.getElementById("buyBox").style.width="100%";
+                    document.getElementById("pricing").innerText="Rs. "+ totalPrice;
+                }else{
+                    alert("car is not available in this time slot");
+                }
                 
-                document.getElementById("buyBox").style.display="flex";
-                document.getElementById("buyBox").style.width="100%";
-                document.getElementById("pricing").innerText="Rs. "+ totalPrice;
+                
+                
             });
             
         }
@@ -190,8 +216,14 @@ function logOutHandler(){
 
 
 function payHandler(){
-
-    var nCarData=user.bookingData.concat(user.carData);
+   
+    var nCarData;
+    if(user.carData){
+        nCarData=user.bookingData.concat(user.carData);
+    }else{
+        nCarData=user.bookingData;
+    }
+    
     
     
 
@@ -205,20 +237,27 @@ function payHandler(){
         var store=tx.objectStore("carData");
 
         user.bookingData.forEach(function(data){
+            
            
-                if(data.quantity>0){
-                    data.quantity-=1;
-                }else{
-                    // if(checkIfAvailable(data)){
+            var slot={
+                pdate:data.pickupTime,
+                ddate:data.dropOffTime
+            }
+            data.BookedSlot.push(slot);
+           
+            // if(data.quantity>0){
+            //     data.quantity-=1;
+            // }else{
+            //     // if(checkIfAvailable(data)){
 
-                    // }
-                }
-                
-                
-                var key=data.key;
-                
-                store.put(data,key);
-                bookingDate(data);
+            //     // }
+            // }
+            
+            
+            var key=data.key;
+            
+            store.put(data,key);
+            bookingDate(data);
 
                
             
