@@ -115,7 +115,9 @@ if(user){
                 data.dropOffTime=d2;
                 
                 // console.log(typeof(data.pickupTime));
-                totalPrice+=(+data.price)*(+hrs);
+                data.charge=(+data.price)*(+hrs);
+                totalPrice+=data.charge;
+                
                 document.getElementById("buyBox").style.display="flex";
                 document.getElementById("buyBox").style.width="100%";
                 document.getElementById("pricing").innerText="Rs. "+ totalPrice;
