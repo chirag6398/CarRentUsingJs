@@ -22,7 +22,7 @@ if(user){
     }else{
         document.getElementById("admin").style.display="none";
     }
-    
+
     var bookingCar=user.bookingData;
    
     if(!bookingCar || bookingCar.length===0){
@@ -132,6 +132,53 @@ if(user){
     window.location.href="./login.html";
 }
 
+function bookingDate(car){
+    var idb=indexedDB.open("carRentDatabase");
+    idb.onsuccess=function(){
+        var db=idb.result;
+        var tx1=db.transaction("bookingDate","readwrite");
+        tx1.onerror=function(e){
+           
+            console.log(e.target.error);
+        }
+        var store1=tx1.objectStore("bookingDate");
+
+        var key=new Date().toDateString();
+
+        
+        
+        
+        var req=store1.openCursor();
+        // var req1=store1.get(key);
+        // req1.onsuccess=function(){
+        //     console.log(req1.result);
+
+        // }
+        req.onsuccess=function(){
+            var cursor=req.result;
+            if(cursor){
+                if(cursor.value.date==key){
+                    console.log(cursor.value);
+                    cursor.value.car.push(car);
+                    console.log(cursor.value,key);
+                    store1.put(cursor.value);
+
+                }else{
+                    cursor.continue();
+                }
+            }else{
+                // console.log(nuser)
+                var ncar={
+                    car:[car],
+                    date:key
+                }
+                store1.put(ncar)
+            }
+        }
+    }
+    
+}
+
 function logOutHandler(){
     console.log("hi")
     window.localStorage.removeItem("currentUser");
@@ -144,14 +191,7 @@ function payHandler(){
 
     var nCarData=user.bookingData.concat(user.carData);
     
-    user={
-        ...user,
-        carData:nCarData,
-        
-       
-        totalPrice,
-        
-    }
+    
 
    
 
@@ -162,20 +202,34 @@ function payHandler(){
         var tx=db.transaction("carData","readwrite");
         var store=tx.objectStore("carData");
 
-        user.carData.forEach(function(data){
+        user.bookingData.forEach(function(data){
            
-            
-                data.quantity-=1;
+                if(data.quantity>0){
+                    data.quantity-=1;
+                }else{
+                    // if(checkIfAvailable(data)){
+
+                    // }
+                }
+                
                 
                 var key=data.key;
                 
                 store.put(data,key);
+                bookingDate(data);
 
                
             
             
     
         });
+
+        user={
+            ...user,
+            carData:nCarData,
+            totalPrice,
+            
+        }
         var tx2=db.transaction("users","readwrite");
         var store2=tx2.objectStore("users");
         user.bookingData=[];

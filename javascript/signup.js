@@ -9,6 +9,53 @@ var  PhnNumber=document.getElementById("number");
 var  Cpassword=document.getElementById("cpassword");
 var  checkIcon=document.getElementsByClassName("checkIcon");
 
+function addUserLogIn(user){
+    var idb=indexedDB.open("carRentDatabase");
+    idb.onsuccess=function(){
+        var db=idb.result;
+        var tx1=db.transaction("userSignUpDate","readwrite");
+        tx1.onerror=function(e){
+           
+            console.log(e.target.error);
+        }
+        var store1=tx1.objectStore("userSignUpDate");
+
+        var key=new Date().toDateString();
+
+        
+        
+        
+        var req=store1.openCursor();
+        // var req1=store1.get(key);
+        // req1.onsuccess=function(){
+        //     console.log(req1.result);
+
+        // }
+        req.onsuccess=function(){
+            var cursor=req.result;
+            if(cursor){
+                if(cursor.value.date==key){
+                    console.log(cursor.value);
+                    cursor.value.user.push(user);
+                    console.log(cursor.value,key);
+                    store1.put(cursor.value);
+
+                }else{
+                    cursor.continue();
+                }
+            }else{
+                // console.log(nuser)
+                var nuser={
+                    user:[user],
+                    date:key
+                }
+                store1.put(nuser)
+            }
+        }
+    }
+    
+}
+
 
 function HideBox(){
     passwordValidateBox.style.display="none";
@@ -85,7 +132,7 @@ function checkUserExist(store,user,cb){
         var  cursor = requests.result;
 
         if (cursor) {
-            console.log(cursor.value)
+            // console.log(cursor.value)
 
             if(cursor.value.name===user.name || cursor.value.email===user.email){
                 alert("user exits");
@@ -102,7 +149,7 @@ function checkUserExist(store,user,cb){
 }
 
 function saveUserData(user){
-    var  idb=indexedDB.open("carRentDatabase",7);
+    var  idb=indexedDB.open("carRentDatabase");
     idb.onsuccess=function (){
         db=idb.result;
         var  tx=db.transaction("users","readwrite");
@@ -113,12 +160,14 @@ function saveUserData(user){
         }
 
         var  store=tx.objectStore("users");
+        
 
         checkUserExist(store,user,function(exist){
 
             if(!exist){
+
                 store.add(user);
-                console.log("new user")
+                addUserLogIn(user);
                 window.location.href="./login.html";
             }
             else{

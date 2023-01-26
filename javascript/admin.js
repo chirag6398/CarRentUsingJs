@@ -24,11 +24,50 @@ idb.onsuccess=function (e){
     tx.onerror=function(e){
         console.log(e.target.error);
     }
-    var store=tx.objectStore("carData")
+    var store=tx.objectStore("carData");
+    var tx2=db.transaction("users","readwrite");
+    tx2.onerror=function(e){
+        console.log(e.target.error);
+    }
+    var store2=tx2.objectStore("users")
 
     var request=store.openCursor();
+    var request2=store2.openCursor();
+
     var carNames=[];
     var quantityData=[];
+    var userEmails=[];
+    var userNoOfBookings=[];
+    request2.onsuccess=function(){
+        var cursor2=request2.result;
+        if(cursor2){
+            userEmails.push(cursor2.value.email);
+            // console.log(cursor2.value)
+            if(cursor2.value.carData)
+                userNoOfBookings.push(cursor2.value.carData.length);
+            else{
+                userNoOfBookings.push(0);
+            }
+            cursor2.continue();
+        }else{
+            var ctx1=document.getElementById("myChart1").getContext("2d");
+            var myChart1=new Chart(ctx1,{
+                type:"line",
+                data:{
+                    labels:userEmails,
+                    datasets:[
+                        {
+                            data:userNoOfBookings,
+                            label:"User Activity",
+                            backgroundColor:["red","yellow","blue","grey","brown","violet"]
+        
+                        },
+                    ],
+                },
+            });
+
+        }
+    }
     request.onsuccess=function(){
         var  cursor=request.result;
         if(cursor){
@@ -36,7 +75,7 @@ idb.onsuccess=function (e){
             quantityData.push(10-cursor.value.quantity);
             cursor.continue();
         }else{
-            console.log(carNames,"  ",quantityData)
+            // console.log(carNames,"  ",quantityData)
             var ctx=document.getElementById("myChart").getContext("2d");
             var myChart=new Chart(ctx,{
                 type:"bar",

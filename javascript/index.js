@@ -179,6 +179,8 @@ function createDataBase(){
         db=idb.result;
         db.createObjectStore("users",{autoIncrement:true});
         db.createObjectStore("carData",{autoIncrement:true});
+        db.createObjectStore("userSignUpDate",{keyPath:"date"});
+        db.createObjectStore("bookingDate",{keyPath:"date"});
         
 
         
@@ -202,7 +204,7 @@ function createDataBase(){
         request.onsuccess=function(){
             var  cursor=request.result;
             
-            if(cursor && cursor.value.quantity!=0){
+            if(cursor){
                 // cursor.value.booked=false;
                 // store.put(cursor.value,cursor.key);
                 // console.log(cursor.value.quantity);
@@ -320,7 +322,8 @@ function createDataBase(){
     }
     
     idb.onerror=function (e){
-        alert("error",e)
+        alert("error")
+        console.log(e);
     }
 }
 
