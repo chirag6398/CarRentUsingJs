@@ -62,13 +62,14 @@ font-weight: bolder;
 #cars__container{
 	display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
     margin: 20px;
 }
 .card{
 	margin: 10px;
-	min-height: 425px;
+	min-width: 338px !important;
+	min-height: 518px;
 	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 	padding: 10px;
 	border-radius: 2px;

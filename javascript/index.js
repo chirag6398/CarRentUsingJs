@@ -288,17 +288,12 @@ function createDataBase(){
         addJsonData(store);
 
         var request=store.openCursor();
-        // carNames=[];
-        // quantityData=[];
+      
         request.onsuccess=function(){
             var  cursor=request.result;
             
             if(cursor){
-                // cursor.value.booked=false;
-                // store.put(cursor.value,cursor.key);
-                // console.log(cursor.value.quantity);
-                // carNames.push(cursor.value.name);
-                // quantityData.push(10-cursor.value.quantity);
+                
                 var data={
                     key:cursor.key,
                     booked:false,
@@ -387,21 +382,8 @@ function createDataBase(){
                 cursor.continue();
 
             }else{
-                // var ctx=document.getElementById("myChart").getContext("2d");
-                // var myChart=new Chart(ctx,{
-                //     type:"bar",
-                //     data:{
-                //         labels:carNames,
-                //         datasets:[
-                //             {
-                //                 data:quantityData,
-                //                 label:"Car Rent",
-                //                 backgroundColor:["red","yellow","blue","grey","brown","violet"]
-            
-                //             },
-                //         ],
-                //     },
-                // });
+                
+                // search();
 
             }
         }
@@ -418,8 +400,20 @@ function createDataBase(){
 
 createDataBase();
 
+function search(){
 
-
+    var search=document.getElementById("search").value.toLowerCase();
+    var cards=document.querySelectorAll(".card");
+    console.log(cards)
+    for(var i=0;i<cards.length;i++){
+        if(cards[i].childNodes[2].childNodes[0].innerText.toLowerCase().indexOf(search)>-1){
+            cards[i].style.display="flex";
+        }else{
+            cards[i].style.display="none";
+        }
+    }
+    // console.log(cards[0].childNodes[2].childNodes[0]);
+}
 
 
 function logOutHandler(){
