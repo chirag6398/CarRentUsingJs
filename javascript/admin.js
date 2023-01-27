@@ -8,6 +8,7 @@ if((user)){
         document.getElementById("admin").style.display="block";
     }else{
         document.getElementById("admin").style.display="none";
+        window.location.href="./index.html";
     }
 
    
@@ -48,7 +49,6 @@ function getUpComingBookingDetails(){
         }
     }
 }
-
 getUpComingBookingDetails();
 
 var carNames=[];
@@ -138,7 +138,6 @@ function graphData(){
     }
 
 }
-
 graphData();
 
 var myChart=null;
