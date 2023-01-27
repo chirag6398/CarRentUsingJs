@@ -404,9 +404,23 @@ function search(){
 
     var search=document.getElementById("search").value.toLowerCase();
     var cards=document.querySelectorAll(".card");
-    console.log(cards)
+    console.log(cards[0].childNodes[2].childNodes[2].innerText)
     for(var i=0;i<cards.length;i++){
         if(cards[i].childNodes[2].childNodes[0].innerText.toLowerCase().indexOf(search)>-1){
+            cards[i].style.display="flex";
+        }else{
+            cards[i].style.display="none";
+        }
+    }
+    // console.log(cards[0].childNodes[2].childNodes[0]);
+}
+function personFilter(){
+
+    var search=document.getElementById("person").value.toLowerCase();
+    var cards=document.querySelectorAll(".card");
+    // console.log(cards[0].childNodes[2].childNodes[2].innerText,search)
+    for(var i=0;i<cards.length;i++){
+        if(cards[i].childNodes[2].childNodes[2].innerText.toLowerCase().indexOf(search)>-1){
             cards[i].style.display="flex";
         }else{
             cards[i].style.display="none";
