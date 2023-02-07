@@ -198,19 +198,38 @@ signUpBtn.addEventListener("click",function(e){
     if(name.length===0){ 
         document.getElementById("1").style.visibility="visible";  
         return;
+    }else{
+        document.getElementById("1").style.visibility="hidden";  
     }
     if(email.length===0 || !regEx.test(email)){
         document.getElementById("2").style.visibility="visible";
         return;
+    }else{
+        document.getElementById("2").style.visibility="hidden";
     }
     if(!regExNumer.test(number)){
         document.getElementById("3").style.visibility="visible";
         return;
+    }else{
+        document.getElementById("3").style.visibility="hidden";
     }
-    if(!passwordValidate() || password!==cpassword){
+    if(!passwordValidate()){
         alert("invalid password")
+        return;
+    }else if(password!==cpassword){
+        alert("confirm password is not matching with password");
         return;
     }
     saveUserData({ name,email,password,number,});
+
+
+    // Name.addEventListener("onkeyup",function(){
+    //     if(name.length===0){ 
+    //         document.getElementById("1").style.visibility="visible";  
+           
+    //     }else{
+    //         document.getElementById("1").style.visibility="hidden";  
+    //     }
+    // })
 });
 

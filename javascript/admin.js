@@ -76,26 +76,51 @@ function graphData(){
         var quantityData=[];
         var userEmails=[];
         var userNoOfBookings=[];
+        var userExpenditure=[];
 
         request2.onsuccess=function(){
             var cursor2=request2.result;
             if(cursor2){
                 userEmails.push(cursor2.value.email);
-                if(cursor2.value.carData)
+                if(cursor2.value.carData){
                     userNoOfBookings.push(cursor2.value.carData.length);
+                    var expenditure=0;
+                    cursor2.value.carData.forEach(function(data){
+                        expenditure+=data.charge;
+                    });
+                    userExpenditure.push(expenditure);
+                }
                 else{
                     userNoOfBookings.push(0);
                 }
+
                 cursor2.continue();
             }else{
+                console.log(userEmails,userNoOfBookings,"    ",userExpenditure);
+
                 var ctx1=document.getElementById("myChart1").getContext("2d");
                 var myChart1=new Chart(ctx1,{
-                    type:"line",
+                    type:"pie",
                     data:{
                         labels:userEmails,
                         datasets:[
                             {
                                 data:userNoOfBookings,
+                                label:"User Activity",
+                                backgroundColor:["red","yellow","blue","grey","brown","violet"]
+            
+                            },
+                        ],
+                    },
+                });
+                var ctx2=document.getElementById("myChart3").getContext("2d");
+                var myChart3=new Chart(ctx2,{
+                    type:"bar",
+                    data:{
+                        labels:userEmails,
+                        datasets:[
+                            {
+                                data:userExpenditure,
                                 label:"User Activity",
                                 backgroundColor:["red","yellow","blue","grey","brown","violet"]
             
@@ -206,4 +231,9 @@ function showHandler(){
         }
     }
 
+}
+function logOutHandler(){
+    console.log("hi")
+    window.localStorage.removeItem("currentUser");
+    window.location.href="./login.html";
 }

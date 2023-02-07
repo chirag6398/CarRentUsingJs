@@ -1,21 +1,24 @@
 var user=(JSON.parse(window.localStorage.getItem("currentUser")));
 
 var totalPrice=0;
+
 function diff_hours(dt2, dt1) 
 {
 
     var diff =(dt2.getTime() - dt1.getTime()) / 1000;
     diff /= (60 * 60);
-    // console.log(diff)
+  
     if(diff<0){
         return -100;
     }
     return  (Math.round(diff));
     
 }
+
 function checkCarAvailability(data,d1,d2){
     var available=true;
-    if(data.BookedSlot.length!=0){
+    
+    if(data.BookedSlot && data.BookedSlot.length!=0){
         
         data.BookedSlot.forEach(function(slot){
             if(((new Date(d1))>=(new Date(slot.pdate)) && (new Date(slot.ddate))>=(new Date(d1))) || (new Date(d2))>=(new Date(slot.pdate)) && (new Date(slot.ddate))>=new Date(d2) ){
@@ -43,13 +46,13 @@ if(user){
     }
 
     var bookingCar=user.bookingData;
-   
+//    console.log(bookingCar)
     if(!bookingCar || bookingCar.length===0){
         document.getElementById("cars__container").innerText="Please select car for booking";
     }
-    bookingCar.forEach(function(data){
-        if(data.booked==false){
 
+    bookingCar.forEach(function(data){
+       
             var mainDiv=document.getElementById("cars__container");
             
             var div1=document.createElement("div");
@@ -145,17 +148,12 @@ if(user){
                     alert("car is not available in this time slot");
                 }
                 
-                
+                window.scrollBy(0,window.innerHeight)
                 
             });
-            
-        }
-
-        
+          
         
     });
-    
-
 }else{
     window.location.href="./login.html";
 }
@@ -166,29 +164,20 @@ function bookingDate(car){
         var db=idb.result;
         var tx1=db.transaction("bookingDate","readwrite");
         tx1.onerror=function(e){
-           
             console.log(e.target.error);
         }
         var store1=tx1.objectStore("bookingDate");
 
         var key=new Date().toDateString();
-
-        
-        
-        
         var req=store1.openCursor();
-        // var req1=store1.get(key);
-        // req1.onsuccess=function(){
-        //     console.log(req1.result);
-
-        // }
+        
         req.onsuccess=function(){
             var cursor=req.result;
             if(cursor){
                 if(cursor.value.date==key){
-                    console.log(cursor.value);
+                    
                     cursor.value.car.push(car);
-                    console.log(cursor.value,key);
+                    
                     store1.put(cursor.value);
 
                 }else{
@@ -200,7 +189,7 @@ function bookingDate(car){
                     car:[car],
                     date:key
                 }
-                store1.put(ncar)
+                store1.add(ncar)
             }
         }
     }
@@ -243,19 +232,14 @@ function payHandler(){
                 pdate:data.pickupTime,
                 ddate:data.dropOffTime
             }
-            data.BookedSlot.push(slot);
-           
-            // if(data.quantity>0){
-            //     data.quantity-=1;
-            // }else{
-            //     // if(checkIfAvailable(data)){
-
-            //     // }
-            // }
-            
+            if(data.BookedSlot)
+                data.BookedSlot.push(slot);
+            else
+                data.BookedSlot=[slot];
+          
             
             var key=data.key;
-            
+            console.log(data);
             store.put(data,key);
             bookingDate(data);
 
@@ -271,6 +255,7 @@ function payHandler(){
             totalPrice,
             
         }
+
         var tx2=db.transaction("users","readwrite");
         var store2=tx2.objectStore("users");
         user.bookingData=[];
@@ -279,4 +264,5 @@ function payHandler(){
 
         window.location.href="./booked.html";
     }   
+    
 }

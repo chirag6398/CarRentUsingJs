@@ -1,4 +1,3 @@
-
 if((JSON.parse(window.localStorage.getItem("currentUser")))){
     document.getElementById("signIn").style.display="none";
     document.getElementById("signUp").style.display="none";
@@ -8,19 +7,13 @@ if((JSON.parse(window.localStorage.getItem("currentUser")))){
     }else{
         document.getElementById("admin").style.display="none";
     }
-
-   
-
 }else{
     window.location.href="./login.html";
 }
 
-
-
 var  db=null;
 
-var carNames=[];
-var quantityData=[];
+
 let carData=[{
 
     id:1,
@@ -31,7 +24,6 @@ let carData=[{
     type:"Manual",
     price:85,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -44,7 +36,6 @@ let carData=[{
     type:"Manual",
     price:71,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -57,7 +48,6 @@ let carData=[{
     type:"Manual",
     price:74,
     header:"Compact Monospace",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -70,7 +60,6 @@ let carData=[{
     type:"Manual",
     price:89,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -83,7 +72,6 @@ let carData=[{
     type:"Manual",
     price:102,
     header:"MidSize",
-    quantity:10,
     BookedSlot:[]
 
 },{
@@ -96,7 +84,6 @@ let carData=[{
     type:"Manual",
     price:85,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -109,7 +96,6 @@ let carData=[{
     type:"Automatic",
     price:71,
     header:"Luxury",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -122,7 +108,6 @@ let carData=[{
     type:"Automatic",
     price:74,
     header:"Compact Monospace",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -135,7 +120,6 @@ let carData=[{
     type:"Manual",
     price:89,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -148,7 +132,6 @@ let carData=[{
     type:"Manual",
     price:102,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -161,7 +144,6 @@ let carData=[{
     type:"Automatic",
     price:102,
     header:"MidSize",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -175,7 +157,6 @@ let carData=[{
     type:"Manual",
     price:85,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -188,7 +169,6 @@ let carData=[{
     type:"Automatic",
     price:71,
     header:"Luxury",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -201,7 +181,6 @@ let carData=[{
     type:"Automatic",
     price:150,
     header:"Compact Monospace",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -214,7 +193,6 @@ let carData=[{
     type:"Manual",
     price:99,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 },
@@ -227,7 +205,6 @@ let carData=[{
     type:"Manual",
     price:102,
     header:"Economic",
-    quantity:10,
     BookedSlot:[]
 
 }
@@ -296,7 +273,7 @@ function createDataBase(){
                 
                 var data={
                     key:cursor.key,
-                    booked:false,
+                    
                     ...cursor.value
                 }
                 var  mainDiv=document.getElementById("cars__container");
@@ -371,7 +348,6 @@ function createDataBase(){
                         }
 
                    }
-                    // console.log(user);
                     updateDataBaseUsers(user);
                     
                    
@@ -412,7 +388,7 @@ function search(){
             cards[i].style.display="none";
         }
     }
-    // console.log(cards[0].childNodes[2].childNodes[0]);
+    
 }
 function personFilter(){
 
@@ -426,7 +402,7 @@ function personFilter(){
             cards[i].style.display="none";
         }
     }
-    // console.log(cards[0].childNodes[2].childNodes[0]);
+    
 }
 
 
