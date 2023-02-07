@@ -26,13 +26,13 @@ function getUpComingBookingDetails(){
         var req=store.openCursor();
         var countBooking=0;
         var advancedMoney=0;
-        // var presentDate=new Date().toDateString();
+        
         req.onsuccess=function(){
             var cursor=req.result;
-            // console.log(cursor.key,(new Date(cursor.key)))
+           
             if(cursor){
                 cursor.value.car.forEach(car => {
-                    // console.log((new Date(car.pickupTime)),presentDate,(new Date()))
+                    
                     if((new Date(car.pickupTime))>=(new Date())){
                         countBooking+=1;
                         if(car.charge){
@@ -232,8 +232,51 @@ function showHandler(){
     }
 
 }
+
 function logOutHandler(){
     console.log("hi")
     window.localStorage.removeItem("currentUser");
     window.location.href="./login.html";
 }
+function userSignUpDateAnalysis(){
+    var  idb=indexedDB.open("carRentDatabase");
+
+    idb.onsuccess=function(){
+        var db=idb.result;
+        var tx=db.transaction("userSignUpDate","readonly");
+        var store=tx.objectStore("userSignUpDate");
+        var req=store.openCursor();
+        var dates=[];
+        var userCount=[];
+        req.onsuccess=function(){
+            var cursor=req.result;
+            if(cursor){
+                userCount.push(cursor.value.user.length);
+                dates.push(cursor.value.date);
+                cursor.continue();
+            }
+            else{
+                var ctx=document.getElementById("myChart4").getContext("2d");
+
+                myChart=new Chart(ctx,{
+                    type:"line",
+                    data:{
+                        labels:dates,
+                        datasets:[
+                            {
+                                data:userCount,
+                                label:"Car Booked",
+                                backgroundColor:["red","yellow","blue","grey","brown","violet"]
+            
+                            },
+                        ],
+                    },
+                });
+
+            }
+        }
+
+    }
+
+}
+userSignUpDateAnalysis();
