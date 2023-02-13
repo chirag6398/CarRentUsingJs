@@ -52,28 +52,87 @@ function getUpComingBookingDetails(){
 getUpComingBookingDetails();
 
 var carNames=[];
-function graphData(){
+
+function carAnalysis(){
+    var  idb=indexedDB.open("carRentDatabase");
+    var  db=null;
+    idb.onsuccess=function (e){
+
+    db=idb.result;
+    var tx=db.transaction("carData","readwrite");
+    tx.onerror=function(e){
+        console.log(e.target.error);
+    }
+    var store=tx.objectStore("carData");
+    var request=store.openCursor();
+    request.onsuccess=function(){
+        var cursor=request.result;
+        if(cursor){
+            carNames.push(cursor.value.name);
+            cursor.continue();
+        }else{
+            console.log(carNames)
+            var tx=db.transaction("bookingDate","readwrite");
+            tx.onerror=function(e){
+                console.log(e.target.error);
+            }
+            var store=tx.objectStore("bookingDate");
+            var req=store.openCursor();
+            var quantityData=new Array(carNames.length).fill(0);
+        
+            req.onsuccess=function(){
+                var  cursor=req.result;
+                if(cursor){
+                    cursor.value.car.forEach(function(car){
+                        quantityData[car.key-1]+=1;
+                        
+                    })
+                    cursor.continue();
+                }else{
+                    console.log(carNames,"  ",quantityData)
+                    var ctx=document.getElementById("myChart").getContext("2d");
+                    var myChart=new Chart(ctx,{
+                        type:"bar",
+                        data:{
+                            labels:carNames,
+                            datasets:[
+                                {
+                                    data:quantityData,
+                                    label:"Car Rent",
+                                    backgroundColor:["red","yellow","blue","grey","brown","violet"]
+                
+                                },
+                            ],
+                        },
+                    });
+        
+                }
+            }
+        }
+    }
+
+    }
+}
+carAnalysis();
+function userAnalysis(){
     var  idb=indexedDB.open("carRentDatabase");
     var  db=null;
     idb.onsuccess=function (e){
     
         db=idb.result;
-        var tx=db.transaction("carData","readwrite");
-        tx.onerror=function(e){
-            console.log(e.target.error);
-        }
-        var store=tx.objectStore("carData");
+       
         var tx2=db.transaction("users","readwrite");
         tx2.onerror=function(e){
             console.log(e.target.error);
         }
         var store2=tx2.objectStore("users")
     
-        var request=store.openCursor();
+       
         var request2=store2.openCursor();
     
         
-        var quantityData=[];
+        
+        
         var userEmails=[];
         var userNoOfBookings=[];
         var userExpenditure=[];
@@ -82,7 +141,8 @@ function graphData(){
             var cursor2=request2.result;
             if(cursor2){
                 userEmails.push(cursor2.value.email);
-                if(cursor2.value.carData){
+                // console.log(cursor2.value.carData)
+                if(cursor2.value.carData!==undefined){
                     userNoOfBookings.push(cursor2.value.carData.length);
                     var expenditure=0;
                     cursor2.value.carData.forEach(function(data){
@@ -92,6 +152,7 @@ function graphData(){
                 }
                 else{
                     userNoOfBookings.push(0);
+                    userExpenditure.push(0);
                 }
 
                 cursor2.continue();
@@ -133,37 +194,13 @@ function graphData(){
     
             }
         }
-        request.onsuccess=function(){
-            var  cursor=request.result;
-            if(cursor){
-                carNames.push(cursor.value.name);
-                quantityData.push(cursor.value.BookedSlot.length);
-                cursor.continue();
-            }else{
-                console.log(carNames,"  ",quantityData)
-                var ctx=document.getElementById("myChart").getContext("2d");
-                var myChart=new Chart(ctx,{
-                    type:"bar",
-                    data:{
-                        labels:carNames,
-                        datasets:[
-                            {
-                                data:quantityData,
-                                label:"Car Rent",
-                                backgroundColor:["red","yellow","blue","grey","brown","violet"]
-            
-                            },
-                        ],
-                    },
-                });
-    
-            }
-        }
+
+        
         
     }
 
 }
-graphData();
+userAnalysis();
 
 var myChart=null;
 function showHandler(){
@@ -181,8 +218,6 @@ function showHandler(){
     }
     var d1=new Date(sdate).toDateString();
     var d2=new Date(edate).toDateString();
-    // var d0=new Date().toDateString();
-    // console.log((new Date(d1)<new Date(d2)),"---",d1,d2,d0);
     var idb=indexedDB.open("carRentDatabase");
     idb.onsuccess=function(){
 
@@ -199,7 +234,7 @@ function showHandler(){
                     console.log("valid",cursor.value);
                     cursor.value.car.forEach(function(car){
                         carBooked[car.key-1]+=1;
-                        console.log(typeof(car.key),carBooked[car.key-1],carBooked.length);
+                        
                     })
 
 
@@ -279,4 +314,5 @@ function userSignUpDateAnalysis(){
     }
 
 }
+
 userSignUpDateAnalysis();

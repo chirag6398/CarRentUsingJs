@@ -1,5 +1,3 @@
-///<reference path="../db/db.js"/>
-
 var  signUpBtn=document.getElementById("signUp");
 var  Name=document.getElementById("name");
 var  Email=document.getElementById("email");
@@ -26,11 +24,7 @@ function addUserLogIn(user){
         
         
         var req=store1.openCursor();
-        // var req1=store1.get(key);
-        // req1.onsuccess=function(){
-        //     console.log(req1.result);
-
-        // }
+        
         req.onsuccess=function(){
             var cursor=req.result;
             if(cursor){
@@ -193,8 +187,10 @@ signUpBtn.addEventListener("click",function(e){
     var  password=Password.value.trim();
     var  number=PhnNumber.value.trim();
     var  cpassword=Cpassword.value.trim();
+
     var  regEx=/^([a-z0-9\.-]+)@([a-z0-9]+).([a-z]{2,8})?$/;
     var  regExNumer=/^\d{10}$/;
+
     if(name.length===0){ 
         document.getElementById("1").style.visibility="visible";  
         return;
@@ -220,16 +216,7 @@ signUpBtn.addEventListener("click",function(e){
         alert("confirm password is not matching with password");
         return;
     }
+    
     saveUserData({ name,email,password,number,});
-
-
-    // Name.addEventListener("onkeyup",function(){
-    //     if(name.length===0){ 
-    //         document.getElementById("1").style.visibility="visible";  
-           
-    //     }else{
-    //         document.getElementById("1").style.visibility="hidden";  
-    //     }
-    // })
 });
 

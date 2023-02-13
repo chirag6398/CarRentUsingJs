@@ -222,8 +222,8 @@ function payHandler(){
 
     idb.onsuccess=function(){
         var db=idb.result;
-        var tx=db.transaction("carData","readwrite");
-        var store=tx.objectStore("carData");
+        // var tx=db.transaction("carData","readwrite");
+        // var store=tx.objectStore("carData");
 
         user.bookingData.forEach(function(data){
             
@@ -240,7 +240,7 @@ function payHandler(){
             
             var key=data.key;
             console.log(data);
-            store.put(data,key);
+            // store.put(data,key);
             bookingDate(data);
 
                
